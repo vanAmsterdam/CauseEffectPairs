@@ -1,5 +1,6 @@
 import torch.nn as nn
 import torch.nn.functional as F
+import torch
 
 ## Define network
 class TwoLayerNet(nn.Module):
@@ -12,4 +13,7 @@ class TwoLayerNet(nn.Module):
         h_relu = F.relu(self.linear1(x))
         y_pred = self.linear2(h_relu)
         return y_pred
+
+def loss_fn(outputs, targets):
+    return torch.sum((outputs - targets)**2)
 
