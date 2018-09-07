@@ -12,7 +12,7 @@ def train(model, num_epochs, x, target, loss_fn, optimizer):
         loss = loss_fn(pred, target)
         
         optimizer.zero_grad()
-        loss.backward()
+        loss.backward(retain_graph=True)
         optimizer.step()
         # loss.zero_grad()
 

@@ -15,5 +15,5 @@ class TwoLayerNet(nn.Module):
         return y_pred
 
 def loss_fn(outputs, targets):
-    return torch.sum((outputs - targets)**2)
+    return -torch.sum((outputs - targets)**2)
 

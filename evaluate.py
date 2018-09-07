@@ -1,5 +1,5 @@
 import torch
-import os; os.chdir("/home/wamsterd/local_scratch/git/CauseEffectPairs/")
+# import os; os.chdir("/home/wamsterd/local_scratch/git/CauseEffectPairs/")
 from torch.autograd import Variable
 import model.net as net
 from torch.optim import SGD
@@ -11,20 +11,23 @@ import numpy as np
 torch.manual_seed(123456)
 
 a, b, c, d = 1, 2, -.5, 1.2
-x = Variable(torch.Tensor(torch.normal(torch.zeros(100, 1))), requires_grad = True)
+x = Variable(torch.Tensor(torch.normal(torch.zeros(1000, 1))), requires_grad = True)
 y = a + b * x + c * (x**2) + d * (x**3)
 
-model = net.TwoLayerNet(1, 5, 1)
+model = net.TwoLayerNet(1, 20, 1)
 
 # loss_fn = net.loss_fn
-optimizer = SGD(model.parameters(), lr=0.001)
+optimizer = SGD(model.parameters(), lr=0.0001)
 
-num_epochs = 10
-train(model, num_epochs, x, y, net.loss_fn, optimizer)
+num_epochs = 1000
+# train(model, num_epochs, x, y, net.loss_fn, optimizer)
+train(model, num_epochs, x, y, torch.nn.MSELoss(), optimizer)
+pred = model.forward(x)
+print("mean mse:", torch.nn.MSELoss()(pred, x).data)
 
+print("mean mse:", net.loss_fn(pred, x).data)
+# print(np.hstack([pred.data, y.data, torch.abs(pred.data - y.data)]))
 
-
-pred = model(x)
 # for i in range(num_epochs):
 #     pred = model(x)
 #     loss = loss_fn(pred, x)
@@ -44,7 +47,6 @@ train(model,
 
 pred = model.forward(x)
 
-print(np.hstack([pred2.data, y.data, torch.abs(pred2.data - y.data)]))
 
 # loss_fn = torch.nn.MSELoss()
 # loss = loss_fn(pred, y)
