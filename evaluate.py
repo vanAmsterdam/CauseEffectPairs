@@ -15,7 +15,6 @@ a, b, c, d = 1, 2, -.5, 1.2
 x = Variable(torch.Tensor(np.linspace(-2, 2, n_units).reshape(n_units, 1)), requires_grad = True)
 y = a + b * x + c * (x**2) + d * (x**3)
 
-
 # plot data 
 plt.scatter(x.detach().numpy(), y.detach().numpy())
 plt.show()
