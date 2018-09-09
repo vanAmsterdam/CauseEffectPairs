@@ -1,4 +1,5 @@
 from torch.tensor import Tensor
+from tqdm import tqdm
 # from torch.nn import NeuralNet
 # from torch.nn.loss import Loss, MSE
 # from torch.optim import Optimizer, SGD
@@ -6,13 +7,19 @@ from torch.tensor import Tensor
 
 
 
-def train(model, num_epochs, x, target, loss_fn, optimizer):
-    for i in range(num_epochs):
+def train(model, num_epochs, x, target, loss_fn, optimizer, gradient_clip = None):
+    for i in tqdm(range(num_epochs)):
         pred = model(x)
         loss = loss_fn(pred, target)
         
         optimizer.zero_grad()
         loss.backward(retain_graph=True)
+
+        if not gradient_clip is None:
+            for param in model.parameters():
+                param.grad.clamp_(*gradient_clip)
+
+
         optimizer.step()
         # loss.zero_grad()
 
